@@ -1,0 +1,7 @@
+{
+  "name": "Airing Card",
+  "render_readme": true,
+  "content_in_root": false,
+  "filename": "ha-airing-card.js",
+  "homeassistant": "2024.8.0"
+}
