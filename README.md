@@ -193,6 +193,37 @@ type: custom:airing-mini-card
 | <img src="https://raw.githubusercontent.com/juju35/ha-airing-card/main/screenshots/ar-mini-yes.png" alt="Mini, yes" width="380"> | <img src="https://raw.githubusercontent.com/juju35/ha-airing-card/main/screenshots/ar-mini-no.png" alt="Mini, not now" width="380"> | <img src="https://raw.githubusercontent.com/juju35/ha-airing-card/main/screenshots/ar-mini-zoom.png" alt="Mini, zoomed in" width="400"> |
 | <img src="https://raw.githubusercontent.com/juju35/ha-airing-card/main/screenshots/ar-mini-yes-dark.png" alt="Mini, yes, dark" width="380"> | <img src="https://raw.githubusercontent.com/juju35/ha-airing-card/main/screenshots/ar-mini-no-dark.png" alt="Mini, not now, dark" width="380"> | <img src="https://raw.githubusercontent.com/juju35/ha-airing-card/main/screenshots/ar-mini-zoom-dark.png" alt="Mini, zoomed in, dark" width="400"> |
 
+## How it works
+
+- **Rooms**: from `rooms`, or from Smart Comfort's room sensors when `rooms` is not set; a room needs air when its CO₂ reaches `co2` (1000 ppm) or its humidity reaches `humidity` (65 %), and drying it only counts when the air outside holds less water (absolute humidity, Magnus formula)
+- **Answer**: *No need* (grey) when no room needs air; *Not now* (red) when a room needs air but the outdoors forbids it (poor air, pollen at `pollen_no`, a storm, a heat wave from `heat`); *Not ideal* (amber, a short airing) when the outdoors only gets in the way (moderate air, pollen at `pollen_meh`, rain now or within `rain_soon` minutes, warmer outside); *Good time* (accent) otherwise
+- **Air quality**: a European-style index (1 to 6, Atmo France) or a US-style AQI (0 to 500, WAQI), told apart by its value; *Not ideal* from 3 / 101 and *Not now* from 4 / 151 unless `thresholds` says otherwise
+- **Rain**: the weather's condition, or `rain` as a binary sensor, a rain rate or a next-rain timestamp (Météo-France)
+- **Time**: `duration` (10 min), 5 more when a room reaches `co2_high` (1400 ppm), at most 5 when *Not ideal* or when it is cold outside (under `cold`)
+- **Timer**: with a `timer` helper the button starts and cancels it, so every dashboard sees the same countdown; without one the card counts down by itself
+- **Refresh**: the card redraws on each change of its entities and every 30 seconds while a timer runs
+- **Actions**: only `timer.start` and `timer.cancel`, on the helper you give
+
+## Development
+
+```bash
+npm install
+npm run build        # stamps the version of package.json into dist/ha-airing-card.js
+npm run check        # builds and checks the bundle (run in CI)
+npm test             # unit tests
+npm run screenshots  # renders the cards with mock readings into screenshots/ (and the GIFs, needs ffmpeg)
+```
+
+The source is split into ES modules under `src/shared/` (entry `src/shared/index.js`); `npm run build` assembles them (`scripts/bundle.mjs`) into the single file the Marketplace serves.
+
+`dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built files to the release, which is where the Marketplace installs them from.
+
+### Releasing
+
+1. Bump `version` in `package.json`
+2. Add a `## <version>` section at the top of [CHANGELOG.md](https://github.com/juju35/ha-airing-card/blob/main/CHANGELOG.md)
+3. Merge a `feat` or `fix` into `main`: the **Release** workflow builds the card, creates the tag and the GitHub release with the changelog section as notes, and attaches `ha-airing-card.js` and its translation files
+
 ## Translations
 
 English, French, German, Spanish, Italian, Dutch, Portuguese (Portugal), Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian, Greek, Serbian (Cyrillic and Latin). The card follows the Home Assistant language, or `language`.
@@ -200,3 +231,9 @@ English, French, German, Spanish, Italian, Dutch, Portuguese (Portugal), Polish,
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Support
+
+If you find this project useful, you can support its development:
+
+<a href="https://buymeacoffee.com/julienstep9"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" height="50"></a>
