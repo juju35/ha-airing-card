@@ -25,9 +25,9 @@ const arScene = ({ night, state, animate, rain, haze }) => {
   const open = AR_CURTAIN[state] ?? 0;
   const ajar = ["meh", "yes", "airing"].includes(state);
   const sky = night ? ["#1b2a44", "#2b3d5c"] : ["#bfe6f7", "#e5f5fb"];
-  const frame = night ? "#5b6b62" : "#ffffff";
-  const edge = night ? "#3c4a43" : "#bcd9c8";
-  const curtain = night ? "#3f6b55" : "#8fcfae";
+  const frame = night ? "#5f6b56" : "#ffffff";
+  const edge = night ? "#424a3a" : "#cfe3b0";
+  const curtain = night ? "#4f6b2f" : "#b5d98a";
   const sway = (x) =>
     animate && ajar ? `<animateTransform attributeName="transform" type="rotate" values="0 ${x} 8;2.5 ${x} 8;0 ${x} 8" dur="${AR_LOOP}s" repeatCount="indefinite"/>` : "";
   const drops = rain
@@ -43,7 +43,7 @@ const arScene = ({ night, state, animate, rain, haze }) => {
       ? [24, 40, 56]
           .map((y, i) => {
             const flow = animate ? `<animate attributeName="stroke-dashoffset" values="40;0" dur="${AR_LOOP}s" begin="${i * 0.4}s" repeatCount="indefinite"/>` : "";
-            return `<path d="M98 ${y} q14 -6 28 0 t28 0" fill="none" stroke="${night ? "#7fd1a8" : "#1e8e5a"}" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="18 22" opacity=".55">${flow}</path>`;
+            return `<path d="M98 ${y} q14 -6 28 0 t28 0" fill="none" stroke="${night ? "#a9e34b" : "#5c940d"}" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="18 22" opacity=".55">${flow}</path>`;
           })
           .join("")
       : "";
@@ -56,7 +56,7 @@ const arScene = ({ night, state, animate, rain, haze }) => {
     : `<rect x="136" y="10" width="38" height="60" fill="none" stroke="${frame}" stroke-width="3"/>`;
   return `<defs><linearGradient id="arsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient></defs>
     <rect x="98" y="10" width="76" height="60" fill="url(#arsky)"/>${lights}
-    <path d="M98 60 q20 -10 40 -4 t36 -2 V70 H98Z" fill="${night ? "#22382d" : "#a8dcbf"}"/>
+    <path d="M98 60 q20 -10 40 -4 t36 -2 V70 H98Z" fill="${night ? "#2c3a1e" : "#c3e29a"}"/>
     ${haze ? `<rect x="98" y="10" width="76" height="60" fill="${night ? "#6b6f74" : "#b9b4a8"}" opacity=".45"/>` : ""}${drops}
     <rect x="96" y="8" width="80" height="64" fill="none" stroke="${frame}" stroke-width="4"/><rect x="96" y="8" width="80" height="64" fill="none" stroke="${edge}" stroke-width=".8"/>
     <line x1="136" y1="10" x2="136" y2="70" stroke="${frame}" stroke-width="3"/>${sash}${breeze}
@@ -403,9 +403,9 @@ class AiringCard extends RcCard {
     /* Illustrated header (banner): 90 px, edge to edge, the title on a pale green wall, the window at the right, a 10 px
        floor strip at the bottom. The badge's icon is in the answer's colour, by day and night. */
     .banner { position: relative; display: flex; height: 90px; margin: -12px -12px 0; overflow: hidden;
-              background: linear-gradient(180deg, #eef8f1 0%, #dcefe3 100%);
+              background: linear-gradient(180deg, #f3f9e8 0%, #e3f0cf 100%);
               --bt: #0d2a45; --bs: #3b5b78; --ic: color-mix(in srgb, var(--c) 85%, #10283f); --sw: min(200px, 56%); }
-    .banner.night { background: linear-gradient(180deg, #15211b 0%, #1d2c24 100%); --bt: #fff; --bs: rgba(255,255,255,.78); --ic: color-mix(in srgb, var(--c) 72%, #fff); }
+    .banner.night { background: linear-gradient(180deg, #1a2113 0%, #232d19 100%); --bt: #fff; --bs: rgba(255,255,255,.78); --ic: color-mix(in srgb, var(--c) 72%, #fff); }
     .banner .head { position: relative; z-index: 1; flex: 1; min-width: 0; height: 80px; box-sizing: border-box;
                     padding: 0 calc(var(--sw) + 4px) 0 14px; flex-wrap: nowrap; }
     .banner .head::after { content: none; }

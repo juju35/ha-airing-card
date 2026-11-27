@@ -235,5 +235,5 @@ export const rcRegister = (card, editor, name, description) => {
 };
 
 if (!customElements.get("airing-card")) {
-  console.info(`%c HA-AIRING-CARD %c v${RC_VERSION} `, "background:#1e8e5a;color:#fff;font-weight:700", "");
+  console.info(`%c HA-AIRING-CARD %c v${RC_VERSION} `, "background:#5c940d;color:#fff;font-weight:700", "");
 }
